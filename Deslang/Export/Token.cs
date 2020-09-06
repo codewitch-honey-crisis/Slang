@@ -4,13 +4,13 @@ using System.Text;
 using System.ComponentModel;
 namespace Glory
 {
+	#region Token
 	/// <summary>
 	/// Represents a single token produced from a lexer/tokenizer, and consumed by a parser
 	/// A token contains the symbol, the value, and the location information for each lexeme returned from a lexer/tokenizer
 	/// </summary>
 	struct Token
 	{
-		#region Members
 		/// <summary>
 		/// Indicates the name of the symbol
 		/// </summary>
@@ -41,8 +41,9 @@ namespace Glory
 		/// <returns>A string that represents the token</returns>
 		public override string ToString()
 		{
+			// Looks like: Example(123) : Foo
 			return string.Concat(Symbol, "(", string.Concat(SymbolId.ToString(), ") : ", Value));
 		}
-		#endregion
 	}
+	#endregion
 }

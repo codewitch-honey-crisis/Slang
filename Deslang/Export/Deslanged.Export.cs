@@ -1256,15 +1256,34 @@ namespace Glory {
                             Deslanged._Namespace("", new CodeNamespaceImport[] {
                                         new CodeNamespaceImport("System"),
                                         new CodeNamespaceImport("System.Collections.Generic"),
-                                        new CodeNamespaceImport("System.Text")}, new CodeTypeDeclaration[0], new CodeCommentStatement[0]),
+                                        new CodeNamespaceImport("System.Text"),
+                                        new CodeNamespaceImport("System.ComponentModel")}, new CodeTypeDeclaration[0], new CodeCommentStatement[0]),
                             Deslanged._Namespace("Glory", new CodeNamespaceImport[0], new CodeTypeDeclaration[] {
                                         Deslanged._TypeDeclaration("Token", false, false, false, true, false, (MemberAttributes.Final | MemberAttributes. Private), TypeAttributes.NotPublic, new CodeTypeParameter[0], new CodeTypeReference[0], new CodeTypeMember[] {
-                                                    Deslanged._MemberField(new CodeTypeReference(typeof(string)), "Symbol", null, (MemberAttributes.Final | MemberAttributes. Public), new CodeCommentStatement[0], new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0], null),
-                                                    Deslanged._MemberField(new CodeTypeReference(typeof(int)), "SymbolId", null, (MemberAttributes.Final | MemberAttributes. Public), new CodeCommentStatement[0], new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0], null),
-                                                    Deslanged._MemberField(new CodeTypeReference(typeof(int)), "Line", null, (MemberAttributes.Final | MemberAttributes. Public), new CodeCommentStatement[0], new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0], null),
-                                                    Deslanged._MemberField(new CodeTypeReference(typeof(int)), "Column", null, (MemberAttributes.Final | MemberAttributes. Public), new CodeCommentStatement[0], new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0], null),
-                                                    Deslanged._MemberField(new CodeTypeReference(typeof(long)), "Position", null, (MemberAttributes.Final | MemberAttributes. Public), new CodeCommentStatement[0], new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0], null),
-                                                    Deslanged._MemberField(new CodeTypeReference(typeof(string)), "Value", null, (MemberAttributes.Final | MemberAttributes. Public), new CodeCommentStatement[0], new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0], null),
+                                                    Deslanged._MemberField(new CodeTypeReference(typeof(string)), "Symbol", null, (MemberAttributes.Final | MemberAttributes. Public), new CodeCommentStatement[] {
+                                                                new CodeCommentStatement("<summary>", true),
+                                                                new CodeCommentStatement("Indicates the name of the symbol", true),
+                                                                new CodeCommentStatement("</summary>", true)}, new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0], null),
+                                                    Deslanged._MemberField(new CodeTypeReference(typeof(int)), "SymbolId", null, (MemberAttributes.Final | MemberAttributes. Public), new CodeCommentStatement[] {
+                                                                new CodeCommentStatement("<summary>", true),
+                                                                new CodeCommentStatement("Indicates the symbol\'s id", true),
+                                                                new CodeCommentStatement("</summary>", true)}, new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0], null),
+                                                    Deslanged._MemberField(new CodeTypeReference(typeof(int)), "Line", null, (MemberAttributes.Final | MemberAttributes. Public), new CodeCommentStatement[] {
+                                                                new CodeCommentStatement("<summary>", true),
+                                                                new CodeCommentStatement("Indicates the one based line on which the token occurs", true),
+                                                                new CodeCommentStatement("</summary>", true)}, new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0], null),
+                                                    Deslanged._MemberField(new CodeTypeReference(typeof(int)), "Column", null, (MemberAttributes.Final | MemberAttributes. Public), new CodeCommentStatement[] {
+                                                                new CodeCommentStatement("<summary>", true),
+                                                                new CodeCommentStatement("Indicates the one based column on which the token occurs", true),
+                                                                new CodeCommentStatement("</summary>", true)}, new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0], null),
+                                                    Deslanged._MemberField(new CodeTypeReference(typeof(long)), "Position", null, (MemberAttributes.Final | MemberAttributes. Public), new CodeCommentStatement[] {
+                                                                new CodeCommentStatement("<summary>", true),
+                                                                new CodeCommentStatement("Indicates the zero based position on which the token occurs", true),
+                                                                new CodeCommentStatement("</summary>", true)}, new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0], null),
+                                                    Deslanged._MemberField(new CodeTypeReference(typeof(string)), "Value", null, (MemberAttributes.Final | MemberAttributes. Public), new CodeCommentStatement[] {
+                                                                new CodeCommentStatement("<summary>", true),
+                                                                new CodeCommentStatement("Indicates the token value", true),
+                                                                new CodeCommentStatement("</summary>", true)}, new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0], null),
                                                     Deslanged._MemberMethod(new CodeTypeReference(typeof(string)), "ToString", (MemberAttributes.Override | MemberAttributes. Public), new CodeParameterDeclarationExpression[0], new CodeStatement[] {
                                                                 new CodeMethodReturnStatement(new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(string))), "Concat"), new CodeExpression[] {
                                                                                 new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "Symbol"),
@@ -1272,13 +1291,18 @@ namespace Glory {
                                                                                 new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodeTypeReferenceExpression(new CodeTypeReference(typeof(string))), "Concat"), new CodeExpression[] {
                                                                                             new CodeMethodInvokeExpression(new CodeMethodReferenceExpression(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "SymbolId"), "ToString"), new CodeExpression[0]),
                                                                                             new CodePrimitiveExpression(") : "),
-                                                                                            new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "Value")})}))}, new CodeTypeReference[0], null, new CodeCommentStatement[0], new CodeAttributeDeclaration[0], new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0], null)}, new CodeCommentStatement[] {
+                                                                                            new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), "Value")})}))}, new CodeTypeReference[0], null, new CodeCommentStatement[] {
+                                                                new CodeCommentStatement("<summary>", true),
+                                                                new CodeCommentStatement("Gets a string representation of the token", true),
+                                                                new CodeCommentStatement("</summary>", true),
+                                                                new CodeCommentStatement("<returns>A string that represents the token</returns>", true)}, new CodeAttributeDeclaration[0], new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0], null)}, new CodeCommentStatement[] {
                                                     new CodeCommentStatement("<summary>", true),
                                                     new CodeCommentStatement("Represents a single token produced from a lexer/tokenizer, and consumed by a pars" +
                                                             "er", true),
                                                     new CodeCommentStatement("A token contains the symbol, the value, and the location information for each lex" +
                                                             "eme returned from a lexer/tokenizer", true),
-                                                    new CodeCommentStatement("</summary>", true)}, new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0], null)}, new CodeCommentStatement[0])}, new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0]);
+                                                    new CodeCommentStatement("</summary>", true)}, new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[] {
+                                                    new CodeRegionDirective(CodeRegionMode.End, "")}, null)}, new CodeCommentStatement[0])}, new CodeAttributeDeclaration[0], new CodeDirective[0], new CodeDirective[0]);
             }
         }
     }

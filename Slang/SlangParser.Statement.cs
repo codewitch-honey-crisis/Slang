@@ -3,7 +3,6 @@ using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-
 namespace Slang
 {
 	using ST = SlangTokenizer;

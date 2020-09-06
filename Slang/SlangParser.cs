@@ -2,7 +2,6 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
-
 namespace Slang
 {
     using ST = SlangTokenizer;
@@ -393,10 +392,6 @@ namespace Slang
                     this._t.Line = (this._t.Line + this._line);
                     this._t.Column = (this._t.Column + this._column);
                     this._t.Position = (this._t.Position + this._position);
-                    if ((null != this._t.Skipped))
-                    {
-                        this._skipped.AddRange(this._t.Skipped);
-                    }
                     return true;
                 }
                 return false;
