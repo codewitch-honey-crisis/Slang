@@ -195,7 +195,7 @@ namespace Deslang
 								object o = null;
 								if (1 < tap.Length)
 								{
-									o = Uri.EscapeDataString(tap[1]);
+									o = Uri.UnescapeDataString(tap[1]);
 								}
 								targs[n] = o;
 							}

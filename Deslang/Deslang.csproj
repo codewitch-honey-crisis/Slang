@@ -42,6 +42,15 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Export\Deslanged.Export.cs" />
+    <None Include="Export\GlrTableParser.cs" />
+    <None Include="Export\GlrWorker.cs" />
+    <None Include="Export\LookAheadEnumerator.cs" />
+    <None Include="Export\LRNodeType.cs" />
+    <None Include="Export\ParseAttribute.cs" />
+    <None Include="Export\ParseNode.cs" />
+    <None Include="Export\TestTemplate.cst" />
+    <None Include="Export\Token.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Shared\CodeDomBuilder.cs" />
@@ -50,9 +59,7 @@
     <None Include="App.config" />
     <None Include="Key.snk" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Export\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\CodeDomGoKit\CodeDomGoKit.csproj">
       <Project>{f1935a78-6eca-4aa9-9be2-0c64be4297c7}</Project>

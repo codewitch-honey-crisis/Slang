@@ -1458,7 +1458,23 @@ namespace CD
 			while (null != (line = sr.ReadLine()))
 				result.Add(new CodeCommentStatement(line, docComment));
 			return result;
-		} 
+		}
+		/// <summary>
+		/// Returns the <see cref="CodeNamespace"/> with the specified name, or null if not found
+		/// </summary>
+		/// <param name="ccu">The compile unit to search</param>
+		/// <param name="ns">The namespace to look for</param>
+		/// <returns>The namespace or null if not found</returns>
+		public static CodeNamespace GetNamespace(this CodeCompileUnit ccu, string ns)
+			=> GetByName(ns??"", ccu.Namespaces);
+		/// <summary>
+		/// Returns the <see cref="CodeTypeDeclaration"/> with the specified name, or null if not found
+		/// </summary>
+		/// <param name="cns">The namespace to search</param>
+		/// <param name="type">The type to look for</param>
+		/// <returns>The type declaration or null if not found</returns>
+		public static CodeTypeDeclaration GetType(this CodeNamespace cns, string type)
+			=> GetByName(type, cns.Types);
 	}
 
 }

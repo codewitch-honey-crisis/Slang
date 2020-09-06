@@ -69,6 +69,18 @@ namespace Slang
 			var prov = CodeDomProvider.CreateProvider(lang);
 			var opts = new CompilerParameters();
 			var outp = prov.CompileAssemblyFromDom(opts, cu);
+			if(outp.Errors.HasErrors)
+			{
+				var sb = new StringBuilder();
+				foreach(CompilerError err in outp.Errors)
+				{
+					if(!err.IsWarning)
+					{
+						sb.AppendLine(err.ErrorText);
+					}
+				}
+				throw new InvalidOperationException(sb.ToString());
+			}
 			var asm = outp.CompiledAssembly;
 			if (null == args) args = new Dictionary<string, object>();
 			var ran = false;
