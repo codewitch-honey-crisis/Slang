@@ -207,6 +207,7 @@ namespace Deslang
 							input = new StreamReader(f);
 							
 							SlangPreprocessor.Preprocess(input, sw, targs, t4language);
+
 							input.Close();
 							input = null;
 							var ccu = SlangParser.ParseCompileUnit(sw.ToString());
