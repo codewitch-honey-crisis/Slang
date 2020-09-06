@@ -20,31 +20,31 @@ namespace CD
 		/// <summary>
 		/// Returns <see cref="CodeThisReferenceExpression"/>
 		/// </summary>
-		public static CodeThisReferenceExpression This { get; } = new CodeThisReferenceExpression();
+		public static CodeThisReferenceExpression This { get => new CodeThisReferenceExpression(); }
 		/// <summary>
 		/// Returns <see cref="CodePrimitiveExpression"/>(true)
 		/// </summary>
-		public static CodePrimitiveExpression True { get; } = new CodePrimitiveExpression(true);
+		public static CodePrimitiveExpression True { get => new CodePrimitiveExpression(true); }
 		/// <summary>
 		/// Returns <see cref="CodePrimitiveExpression"/>(false)
 		/// </summary>
-		public static CodePrimitiveExpression False { get; } = new CodePrimitiveExpression(false);
+		public static CodePrimitiveExpression False { get => new CodePrimitiveExpression(false); }
 		/// <summary>
 		/// Returns <see cref="CodePrimitiveExpression"/>(0)
 		/// </summary>
-		public static CodePrimitiveExpression Zero { get; } = new CodePrimitiveExpression(0);
+		public static CodePrimitiveExpression Zero { get => new CodePrimitiveExpression(0); }
 		/// <summary>
 		/// Returns <see cref="CodePrimitiveExpression"/>(1)
 		/// </summary>
-		public static CodePrimitiveExpression One { get; } = new CodePrimitiveExpression(1);
+		public static CodePrimitiveExpression One { get => new CodePrimitiveExpression(1); }
 		/// <summary>
 		/// Returns <see cref="CodePrimitiveExpression"/>(-1)
 		/// </summary>
-		public static CodePrimitiveExpression NegOne { get; } = new CodePrimitiveExpression(-1);
+		public static CodePrimitiveExpression NegOne { get => new CodePrimitiveExpression(-1); }
 		/// <summary>
 		/// Returns <see cref="CodePrimitiveExpression"/>(null)
 		/// </summary>
-		public static CodePrimitiveExpression Null { get; } = new CodePrimitiveExpression(null);
+		public static CodePrimitiveExpression Null { get => new CodePrimitiveExpression(null); }
 		/// <summary>
 		/// Returns <see cref="CodeConditionStatement"/> with the specified parameters
 		/// </summary>
