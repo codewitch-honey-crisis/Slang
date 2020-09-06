@@ -1449,7 +1449,7 @@ namespace CD
 		/// </summary>
 		/// <param name="text">The comment text</param>
 		/// <param name="docComment">True if these should be rendered as a doc comment, otherwise false</param>
-		/// <returns></returns>
+		/// <returns>A collection containing the comments</returns>
 		public static CodeCommentStatementCollection ToComments(string text,bool docComment = false)
 		{
 			var result = new CodeCommentStatementCollection();
@@ -1465,7 +1465,7 @@ namespace CD
 		/// <param name="ccu">The compile unit to search</param>
 		/// <param name="ns">The namespace to look for</param>
 		/// <returns>The namespace or null if not found</returns>
-		public static CodeNamespace GetNamespace(this CodeCompileUnit ccu, string ns)
+		public static CodeNamespace TryGetNamespace(this CodeCompileUnit ccu, string ns)
 			=> GetByName(ns??"", ccu.Namespaces);
 		/// <summary>
 		/// Returns the <see cref="CodeTypeDeclaration"/> with the specified name, or null if not found
@@ -1473,7 +1473,7 @@ namespace CD
 		/// <param name="cns">The namespace to search</param>
 		/// <param name="type">The type to look for</param>
 		/// <returns>The type declaration or null if not found</returns>
-		public static CodeTypeDeclaration GetType(this CodeNamespace cns, string type)
+		public static CodeTypeDeclaration TryGetType(this CodeNamespace cns, string type)
 			=> GetByName(type, cns.Types);
 	}
 

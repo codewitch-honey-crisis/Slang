@@ -244,23 +244,26 @@ namespace Slang
 			pc.Advance(false);
 			if (!result.IsEnum)
 			{
+
 				while (!pc.IsEnded && ST.rbrace != pc.SymbolId)
 				{
 					result.Members.Add(_ParseMember(pc, result.IsInterface));
+					var last = result.Members[result.Members.Count - 1];
+					while (ST.directive == pc.SymbolId && pc.Value.StartsWith("#end", StringComparison.InvariantCulture))
+						last.EndDirectives.Add(_ParseDirective(pc) as CodeDirective);
 				}
-				var last = result.Members[result.Members.Count - 1];
-				while (ST.directive == pc.SymbolId && pc.Value.StartsWith("#end", StringComparison.InvariantCulture))
-					last.EndDirectives.Add(_ParseDirective(pc) as CodeDirective);
+				
 			}
 			else
 			{
 				while(!pc.IsEnded && ST.rbrace !=pc.SymbolId)
 				{
 					result.Members.Add(_ParseEnumMember(pc));
+					var last = result.Members[result.Members.Count - 1];
+					while (ST.directive == pc.SymbolId && pc.Value.StartsWith("#end", StringComparison.InvariantCulture))
+						last.EndDirectives.Add(_ParseDirective(pc) as CodeDirective);
 				}
-				var last = result.Members[result.Members.Count - 1];
-				while (ST.directive == pc.SymbolId && pc.Value.StartsWith("#end", StringComparison.InvariantCulture))
-					last.EndDirectives.Add(_ParseDirective(pc) as CodeDirective);
+				
 			}
 			if (ST.rbrace != pc.SymbolId)
 				pc.Error("Unterminated type declaration", line, column, position);
