@@ -259,6 +259,9 @@ namespace Slang
 				{
 					result.Members.Add(_ParseEnumMember(pc));
 				}
+				var last = result.Members[result.Members.Count - 1];
+				while (ST.directive == pc.SymbolId && pc.Value.StartsWith("#end", StringComparison.InvariantCulture))
+					last.EndDirectives.Add(_ParseDirective(pc) as CodeDirective);
 			}
 			if (ST.rbrace != pc.SymbolId)
 				pc.Error("Unterminated type declaration", line, column, position);
@@ -486,6 +489,9 @@ namespace Slang
 				_AddCustomAttributes(customAttributes, "", result.CustomAttributes);
 				_CheckCustomAttributes(customAttributes, pc);
 				result.StartDirectives.AddRange(startDirs);
+				pc.Advance(false);
+				while (ST.directive == pc.SymbolId && pc.Value.StartsWith("#end", StringComparison.InvariantCulture))
+					result.EndDirectives.Add(_ParseDirective(pc) as CodeDirective);
 				return result;
 				
 			}
@@ -507,7 +513,6 @@ namespace Slang
 			{
 				if (ST.voidType!=pc2.SymbolId)
 				{
-
 					_ParseType(pc2);
 				}
 				if (ST.lparen != pc2.SymbolId)
