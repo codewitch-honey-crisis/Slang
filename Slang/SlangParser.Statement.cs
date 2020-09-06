@@ -440,8 +440,14 @@ namespace Slang
 			{
 				case ST.lineComment:
 					pc.Advance(false);
-					if(docComments && s.StartsWith("///",StringComparison.InvariantCulture))
-						return new CodeCommentStatement(s.Substring(3).TrimEnd('\r'),true);
+					if (docComments && s.StartsWith("///", StringComparison.InvariantCulture))
+					{
+						if (3 < s.Length && char.IsWhiteSpace(s[3]))
+							return new CodeCommentStatement(s.Substring(4).TrimEnd('\r'), true);
+						return new CodeCommentStatement(s.Substring(3).TrimEnd('\r'), true);
+					}
+					if (2 < s.Length && char.IsWhiteSpace(s[2]))
+						return new CodeCommentStatement(s.Substring(3).TrimEnd('\r'));
 					return new CodeCommentStatement(s.Substring(2).TrimEnd('\r'));
 				case ST.blockComment:
 					pc.Advance(false);

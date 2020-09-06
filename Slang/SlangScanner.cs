@@ -6,9 +6,9 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  DESKTOP-EC2OMEU
-//  DateTime: 8/31/2020 1:36:26 AM
+//  DateTime: 9/6/2020 8:54:41 AM
 //  UserName: honey
-//  GPLEX input file <C:\Users\honey\source\repos\BuildPack\Slang\SlangScanner.lex - 8/31/2020 1:36:25 AM>
+//  GPLEX input file <C:\Users\honey\source\repos\Slang\Slang\SlangScanner.lex - 9/6/2020 8:54:40 AM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, verbose, noParser, stack, minimize
@@ -4062,16 +4062,16 @@ UpdatePosition(yytext); return 433;
 UpdatePosition(yytext); return 461;
             break;
         case 89: // Recognized '#[A-Za-z]+[\t ]*[^\r\n]*',	Shortest string "#w"
-UpdatePosition(yytext);
+UpdatePosition(yytext); return 479;
             break;
         case 90: // Recognized '"*="',	Shortest string "*="
 UpdatePosition(yytext); return 441;
             break;
         case 91: // Recognized '(\/\/[^\r\n]*)+',	Shortest string "//"
-UpdatePosition(yytext);
+UpdatePosition(yytext); return 480;
             break;
         case 92: // Recognized '"/*"',	Shortest string "/*"
-if(!_TryReadUntilBlockEnd("*/")) { UpdatePosition(yytext); return -1; } UpdatePosition(yytext);
+if(!_TryReadUntilBlockEnd("*/")) { UpdatePosition(yytext); return -1; } UpdatePosition(yytext); return 481;
             break;
         case 93: // Recognized '"/="',	Shortest string "/="
 UpdatePosition(yytext); return 443;

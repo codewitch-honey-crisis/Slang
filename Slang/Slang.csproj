@@ -56,10 +56,10 @@
   <ItemGroup>
     <Content Include="Spec\SlangStatement.xbnf" />
     <None Include="Key.snk" />
+    <None Include="SlangScanner.lex" />
     <None Include="SlangTokenizer.lx" />
     <None Include="Spec\Slang.xbnf" />
     <None Include="Spec\SlangExpression.xbnf" />
-    <None Include="SlangScanner.lex" />
     <None Include="Spec\SlangType.xbnf" />
   </ItemGroup>
   <ItemGroup>
@@ -70,7 +70,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>"$(SolutionDir)parsley.exe" "$(ProjectDir)Spec\Slang.xbnf" /noparser /gplex "$(ProjectDir)SlangScanner.lex" /rolex "$(ProjectDir)SlangTokenizer.lx" /namespace Slang /fast /ifstale
+
+"$(SolutionDir)gplex.exe" /out:"$(ProjectDir)SlangScanner.cs" "$(ProjectDir)SlangScanner.lex"</PreBuildEvent>
   </PropertyGroup>
 </Project>

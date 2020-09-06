@@ -249,7 +249,11 @@ namespace Slang
 				{
 					result.Members.Add(_ParseMember(pc, result.IsInterface));
 				}
-			} else
+				var last = result.Members[result.Members.Count - 1];
+				while (ST.directive == pc.SymbolId && pc.Value.StartsWith("#end", StringComparison.InvariantCulture))
+					last.EndDirectives.Add(_ParseDirective(pc) as CodeDirective);
+			}
+			else
 			{
 				while(!pc.IsEnded && ST.rbrace !=pc.SymbolId)
 				{
@@ -683,7 +687,7 @@ namespace Slang
 					{
 						if (ST.lbrace != pc.SymbolId)
 							pc.Error("Expecting body in method definition");
-						pc.Advance();
+						pc.Advance(false);
 
 						while (!pc.IsEnded && ST.rbrace != pc.SymbolId)
 							meth.Statements.Add(_ParseStatement(pc,true));

@@ -29,7 +29,9 @@ namespace scratch
 			
 			// remember to patch it!
 			SlangPatcher.Patch(ccu);
-			
+
+			Console.Error.WriteLine(CU.ToString(ccu));
+
 			// add the compile unit to the resolver
 			res.CompileUnits.Add(ccu);
 

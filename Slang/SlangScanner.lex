@@ -185,9 +185,9 @@
 "partial" 	{ UpdatePosition(yytext); return 484; }
 "void" 	{ UpdatePosition(yytext); return 483; }
 "assembly" 	{ UpdatePosition(yytext); return 482; }
-"/*" 	{ if(!_TryReadUntilBlockEnd("*/")) { UpdatePosition(yytext); return -1; } UpdatePosition(yytext);  }
-(\/\/[^\r\n]*)+ 	{ UpdatePosition(yytext);  }
-#[A-Za-z]+[\t ]*[^\r\n]* 	{ UpdatePosition(yytext);  }
+"/*" 	{ if(!_TryReadUntilBlockEnd("*/")) { UpdatePosition(yytext); return -1; } UpdatePosition(yytext); return 481; }
+(\/\/[^\r\n]*)+ 	{ UpdatePosition(yytext); return 480; }
+#[A-Za-z]+[\t ]*[^\r\n]* 	{ UpdatePosition(yytext); return 479; }
 ":" 	{ UpdatePosition(yytext); return 478; }
 "var" 	{ UpdatePosition(yytext); return 477; }
 ";" 	{ UpdatePosition(yytext); return 476; }
