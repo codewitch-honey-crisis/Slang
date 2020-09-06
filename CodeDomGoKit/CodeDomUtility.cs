@@ -1480,7 +1480,7 @@ namespace CD
 		/// </summary>
 		/// <param name="ctd">The type to search</param>
 		/// <param name="member">The member to look for or null or empty to fetch constructors</param>
-		/// <returns>The type declaration or null if not found</returns>
+		/// <returns>The member or null if not found</returns>
 		public static CodeTypeMember TryGetMember(this CodeTypeDeclaration ctd, string member)
 			=> GetByName(member??"", ctd.Members);
 	}
