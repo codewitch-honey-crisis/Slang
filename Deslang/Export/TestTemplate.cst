@@ -1,0 +1,10 @@
+﻿using System;
+
+namespace Deslang
+{
+	class TestTemplate
+	{
+		public void <#=Arguments["Method1"]#>() { Console.WriteLine("foo"); }
+		public void <#=Arguments["Method2"]#>() { Console.WriteLine("bar"); }
+	}
+}

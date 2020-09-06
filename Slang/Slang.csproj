@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EA7F976B-7F3F-4935-9E77-2F8DEAA80678}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Slang</RootNamespace>
+    <AssemblyName>Slang</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SLANGLIB</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;SLANGLIB</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="GplexShared.cs" />
+    <Compile Include="LookAheadEnumerator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SlangParser.cs" />
+    <Compile Include="SlangParser.Expression.cs" />
+    <Compile Include="SlangParser.Statement.cs" />
+    <Compile Include="SlangParser.Type.cs" />
+    <Compile Include="SlangPatcher.cs" />
+    <Compile Include="SlangPreprocessor.cs" />
+    <Compile Include="SlangScanner.cs" />
+    <Compile Include="SlangSyntaxException.cs" />
+    <Compile Include="SlangTokenizer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Spec\SlangStatement.xbnf" />
+    <None Include="Key.snk" />
+    <None Include="SlangTokenizer.lx" />
+    <None Include="Spec\Slang.xbnf" />
+    <None Include="Spec\SlangExpression.xbnf" />
+    <None Include="SlangScanner.lex" />
+    <None Include="Spec\SlangType.xbnf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CodeDomGoKit\CodeDomGoKit.csproj">
+      <Project>{f1935a78-6eca-4aa9-9be2-0c64be4297c7}</Project>
+      <Name>CodeDomGoKit</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+</Project>
