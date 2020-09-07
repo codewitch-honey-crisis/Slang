@@ -249,6 +249,22 @@ namespace CD
 			return obj;
 		}
 		/// <summary>
+		/// A helper method to remove the current target during the visit operation
+		/// </summary>
+		/// <param name="ctx"></param>
+		public static void RemoveTarget(CodeDomVisitContext ctx)
+		{
+			var prop = ctx.Parent.GetType().GetProperty(ctx.Member);
+			if (-1 != ctx.Index)
+			{
+				var col = prop.GetValue(ctx.Parent) as System.Collections.IList;
+				col.RemoveAt(ctx.Index);
+			} else
+			{
+				prop.SetValue(ctx.Parent, null);
+			}
+		}
+		/// <summary>
 		/// A helper method to replace the current target with a new value during the visit operation
 		/// </summary>
 		/// <param name="ctx">The visit context</param>
@@ -346,7 +362,7 @@ namespace CD
 				_VisitTypeReference(obj.AttributeType, args.Set(args.Root, obj,"AttributeType",-1,_BuildPath(args.Path,"AttributeType",-1), obj.AttributeType, args.Targets), action);
 			if (args.Cancel)
 				return;
-			for(int ic=obj.Arguments.Count,i=0;i<ic;++i)
+			for(var i=0;i< obj.Arguments.Count; ++i)
 			{
 				var arg = obj.Arguments[i];
 				_VisitAttributeArgument(arg, args.Set(args.Root, obj,"Arguments",i,_BuildPath(args.Path,"Arguments",i), arg, args.Targets),action);
@@ -374,7 +390,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for(int ic=obj.StartDirectives.Count,i=0;i<ic;++i)
+				for(var i=0;i< obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -385,7 +401,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Attributes))
 			{
-				for (int ic = obj.AssemblyCustomAttributes.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.AssemblyCustomAttributes.Count; ++i)
 				{
 					var attrDecl = obj.AssemblyCustomAttributes[i];
 					_VisitAttributeDeclaration(attrDecl, args.Set(args.Root, obj, "AssemblyCustomAttributes",i,_BuildPath(args.Path,"AssemblyCustomAttributes",i), attrDecl, args.Targets), action);
@@ -393,7 +409,7 @@ namespace CD
 						return;
 				}
 			}
-			for (int ic=obj.Namespaces.Count,i=0;i<ic;++i)
+			for (var i=0;i< obj.Namespaces.Count; ++i)
 			{
 				var ns = obj.Namespaces[i];
 				if(_CanVisit(ns,args))
@@ -402,7 +418,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -419,7 +435,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Comments))
 			{
-				for (int ic=obj.Comments.Count,i=0;i<ic;++i)
+				for (var i=0;i< obj.Comments.Count; ++i)
 				{
 					var cc = obj.Comments[i];
 					if(_CanVisit(cc,args))
@@ -429,7 +445,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Types))
 			{
-				for(int ic=obj.Types.Count,i=0;i<ic;++i)
+				for(var i=0;i< obj.Types.Count; ++i)
 				{
 					var decl = obj.Types[i];
 					if(_CanVisit(decl,args))
@@ -446,7 +462,7 @@ namespace CD
 			action(args);
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -458,7 +474,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Comments))
 			{
-				for (int ic = obj.Comments.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.Comments.Count; ++i)
 				{
 					var cc = obj.Comments[i];
 					if(_CanVisit(cc,args))
@@ -468,7 +484,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Attributes))
 			{
-				for(int ic=obj.CustomAttributes.Count,i=0;i<ic;++i)
+				for(var i=0;i< obj.CustomAttributes.Count; ++i)
 				{
 					var attrDecl = obj.CustomAttributes[i];
 					_VisitAttributeDeclaration(attrDecl, args.Set(args.Root, obj,"CustomAttributes",i,_BuildPath(args.Path,"CustomAttributes",i), attrDecl, args.Targets), action);
@@ -476,7 +492,7 @@ namespace CD
 						return;
 				}
 			}
-			for (int ic=obj.TypeParameters.Count,i=0;i<ic;++i)
+			for (var i=0;i< obj.TypeParameters.Count; ++i)
 			{
 				var ctp = obj.TypeParameters[i];
 				if(_CanVisit(ctp,args))
@@ -486,7 +502,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.TypeRefs))
 			{
-				for (int ic=obj.BaseTypes.Count,i=0;i<ic;++i)
+				for (var i=0;i< obj.BaseTypes.Count; ++i)
 				{
 					var ctr = obj.BaseTypes[i];
 					if(_CanVisit(ctr,args))
@@ -497,7 +513,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Members))
 			{
-				for(int ic=obj.Members.Count,i=0;i<ic;++i)
+				for(var i=0;i< obj.Members.Count; ++i)
 				{
 					var ctm = obj.Members[i];
 					if(_CanVisit(ctm,args))
@@ -508,7 +524,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for(int ic=obj.EndDirectives.Count,i=0;i<ic;++i)
+				for(var i=0;i< obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -566,7 +582,7 @@ namespace CD
 			action(args);
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -578,7 +594,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Comments))
 			{
-				for(int ic=obj.Comments.Count,i=0;i<ic;++i)
+				for(var i=0;i< obj.Comments.Count; ++i)
 				{
 					var cc = obj.Comments[i];
 					if(_CanVisit(cc,args))
@@ -587,7 +603,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Attributes))
 			{
-				for (int ic=obj.CustomAttributes.Count,i=0;i<ic;++i)
+				for (var i=0;i< obj.CustomAttributes.Count; ++i)
 				{
 					var attrDecl = obj.CustomAttributes[i];
 					_VisitAttributeDeclaration(attrDecl, args.Set(args.Root, obj,"CustomAttributes",i,_BuildPath(args.Path,"CustomAttributes",i), attrDecl,args.Targets), action);
@@ -600,7 +616,7 @@ namespace CD
 
 			if (_HasTarget(args, CodeDomVisitTargets.TypeRefs))
 			{
-				for (int ic=obj.ImplementationTypes.Count,i=0;i<ic;++i)
+				for (var i=0;i< obj.ImplementationTypes.Count; ++i)
 				{
 					var ctr = obj.ImplementationTypes[i];
 					if(_CanVisit(ctr,args))
@@ -613,7 +629,7 @@ namespace CD
 				_VisitTypeReference(obj.PrivateImplementationType, args.Set(args.Root, obj,"PrivateImplementationType",-1,_BuildPath(args.Path,"PrivateImplementationType",-1), obj.PrivateImplementationType,args.Targets), action);
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -630,7 +646,7 @@ namespace CD
 			action(args);
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -642,7 +658,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Comments))
 			{
-				for (int ic = obj.Comments.Count,i=0;i<ic;++i)
+				for (var i=0;i< obj.Comments.Count; ++i)
 				{
 					var cc = obj.Comments[i];
 					if(_CanVisit(cc,args))
@@ -651,7 +667,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Attributes))
 			{
-				for (int ic = obj.CustomAttributes.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.CustomAttributes.Count; ++i)
 				{
 					var attrDecl = obj.CustomAttributes[i];
 					_VisitAttributeDeclaration(attrDecl, args.Set(args.Root, obj, "CustomAttributes",i,_BuildPath(args.Path,"CustomAttributes",i), attrDecl,args.Targets), action);
@@ -661,7 +677,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -678,7 +694,7 @@ namespace CD
 			action(args);
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -690,7 +706,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Comments))
 			{
-				for (int ic = obj.Comments.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.Comments.Count; ++i)
 				{
 					var cc = obj.Comments[i];
 					if(_CanVisit(cc,args))
@@ -699,7 +715,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Attributes))
 			{
-				for (int ic = obj.CustomAttributes.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.CustomAttributes.Count; ++i)
 				{
 					var attrDecl = obj.CustomAttributes[i];
 					_VisitAttributeDeclaration(attrDecl, args.Set(args.Root, obj, "CustomAttributes",i,_BuildPath(args.Path,"CustomAttributes",i), attrDecl,args.Targets), action);
@@ -713,7 +729,7 @@ namespace CD
 				_VisitExpression(obj.InitExpression, args.Set(args.Root, obj,"InitExpression",-1,_BuildPath(args.Path,"InitExpression",-1), obj.InitExpression, args.Targets), action);
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -742,7 +758,7 @@ namespace CD
 			action(args);
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -754,7 +770,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Comments))
 			{
-				for (int ic = obj.Comments.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.Comments.Count; ++i)
 				{
 					var cc = obj.Comments[i];
 					if(_CanVisit(cc,args))
@@ -763,7 +779,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Attributes))
 			{
-				for (int ic = obj.CustomAttributes.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.CustomAttributes.Count; ++i)
 				{
 					var attrDecl = obj.CustomAttributes[i];
 					_VisitAttributeDeclaration(attrDecl, args.Set(args.Root, obj, "CustomAttributes",i,_BuildPath(args.Path,"CustomAttributes",i), attrDecl,args.Targets), action);
@@ -776,7 +792,7 @@ namespace CD
 
 			if (_HasTarget(args, CodeDomVisitTargets.TypeRefs))
 			{
-				for (int ic = obj.ImplementationTypes.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.ImplementationTypes.Count; ++i)
 				{
 					var ctr = obj.ImplementationTypes[i];
 					if(_CanVisit(ctr,args))
@@ -789,7 +805,7 @@ namespace CD
 				_VisitTypeReference(obj.PrivateImplementationType, args.Set(args.Root, obj,"PrivateImplementationType",-1,_BuildPath(args.Path,"PrivateImplementationType",-1), obj.PrivateImplementationType,args.Targets), action);
 			if(_HasTarget(args,CodeDomVisitTargets.Expressions))
 			{
-				for(int ic=obj.Parameters.Count,i=0;i<ic;++i)
+				for(var i=0;i< obj.Parameters.Count; ++i)
 				{
 					var pd = obj.Parameters[i];
 					if(_CanVisit(pd,args))
@@ -800,7 +816,7 @@ namespace CD
 			}
 			if(_HasTarget(args,CodeDomVisitTargets.Statements))
 			{
-				for(int ic=obj.Statements.Count,i=0;i<ic;++i)
+				for(var i=0;i< obj.Statements.Count; ++i)
 				{
 					var stmt = obj.Statements[i];
 					if(_CanVisit(stmt,args))
@@ -811,7 +827,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -828,7 +844,7 @@ namespace CD
 			action(args);
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -840,7 +856,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Comments))
 			{
-				for (int ic = obj.Comments.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.Comments.Count; ++i)
 				{
 					var cc = obj.Comments[i];
 					if(_CanVisit(cc,args))
@@ -849,7 +865,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Attributes))
 			{
-				for (int ic = obj.CustomAttributes.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.CustomAttributes.Count; ++i)
 				{
 					var attrDecl = obj.CustomAttributes[i];
 					_VisitAttributeDeclaration(attrDecl, args.Set(args.Root, obj, "CustomAttributes",i,_BuildPath(args.Path,"CustomAttributes",i), attrDecl,args.Targets), action);
@@ -862,7 +878,7 @@ namespace CD
 
 			if (_HasTarget(args, CodeDomVisitTargets.TypeRefs))
 			{
-				for (int ic = obj.ImplementationTypes.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.ImplementationTypes.Count; ++i)
 				{
 					var ctr = obj.ImplementationTypes[i];
 					if(_CanVisit(ctr,args))
@@ -875,7 +891,7 @@ namespace CD
 				_VisitTypeReference(obj.PrivateImplementationType, args.Set(args.Root, obj,"PrivateImplementationType",-1,_BuildPath(args.Path,"PrivateImplementationType",-1), obj.PrivateImplementationType,args.Targets), action);
 			if (_HasTarget(args, CodeDomVisitTargets.Expressions))
 			{
-				for (int ic=obj.Parameters.Count,i=0;i<ic;++i)
+				for (var i=0;i< obj.Parameters.Count; ++i)
 				{
 					var pd = obj.Parameters[i];
 					if(_CanVisit(pd,args))
@@ -886,7 +902,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Statements))
 			{
-				for (int ic = obj.Statements.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.Statements.Count; ++i)
 				{
 					var stmt = obj.Statements[i];
 					if(_CanVisit(stmt,args))
@@ -897,7 +913,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -914,7 +930,7 @@ namespace CD
 			action(args);
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(!_CanVisit(dir,args))
@@ -926,7 +942,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Comments))
 			{
-				for (int ic = obj.Comments.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.Comments.Count; ++i)
 				{
 					var cc = obj.Comments[i];
 					if(_CanVisit(cc,args))
@@ -935,7 +951,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Attributes))
 			{
-				for (int ic = obj.CustomAttributes.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.CustomAttributes.Count; ++i)
 				{
 					var attrDecl = obj.CustomAttributes[i];
 					_VisitAttributeDeclaration(attrDecl, args.Set(args.Root, obj, "CustomAttributes",i,_BuildPath(args.Path,"CustomAttributes",i), attrDecl,args.Targets), action);
@@ -946,7 +962,7 @@ namespace CD
 			
 			if (_HasTarget(args, CodeDomVisitTargets.TypeRefs))
 			{
-				for (int ic = obj.ImplementationTypes.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.ImplementationTypes.Count; ++i)
 				{
 					var ctr = obj.ImplementationTypes[i];
 					if(_CanVisit(ctr,args))
@@ -959,7 +975,7 @@ namespace CD
 				_VisitTypeReference(obj.PrivateImplementationType, args.Set(args.Root, obj,"PrivateImplementationType",-1,_BuildPath(args.Path,"PrivateImplementationType",-1), obj.PrivateImplementationType,args.Targets), action);
 			if (_HasTarget(args, CodeDomVisitTargets.Expressions))
 			{
-				for (int ic = obj.Parameters.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.Parameters.Count; ++i)
 				{
 					var pd = obj.Parameters[i];
 					if(_CanVisit(pd,args))
@@ -970,7 +986,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Expressions))
 			{
-				for (int ic=obj.ChainedConstructorArgs.Count,i=0;i<ic;++i)
+				for (var i=0;i< obj.ChainedConstructorArgs.Count; ++i)
 				{
 					var ce = obj.ChainedConstructorArgs[i];
 					if(_CanVisit(ce,args))
@@ -981,7 +997,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Expressions))
 			{
-				for (int ic = obj.BaseConstructorArgs.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.BaseConstructorArgs.Count; ++i)
 				{
 					var ce = obj.BaseConstructorArgs[i];
 					if(_CanVisit(ce,args))
@@ -992,7 +1008,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Statements))
 			{
-				for (int ic = obj.Statements.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.Statements.Count; ++i)
 				{
 					var stmt = obj.Statements[i];
 					if(_CanVisit(stmt,args))
@@ -1003,7 +1019,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1020,7 +1036,7 @@ namespace CD
 			action(args);
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1032,7 +1048,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Comments))
 			{
-				for (int ic = obj.Comments.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.Comments.Count; ++i)
 				{
 					var cc = obj.Comments[i];
 					if(_CanVisit(cc,args))
@@ -1041,7 +1057,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Attributes))
 			{
-				for (int ic = obj.CustomAttributes.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.CustomAttributes.Count; ++i)
 				{
 					var attrDecl = obj.CustomAttributes[i];
 					_VisitAttributeDeclaration(attrDecl, args.Set(args.Root, obj, "CustomAttributes",i,_BuildPath(args.Path,"CustomAttributes",i), attrDecl,args.Targets), action);
@@ -1054,7 +1070,7 @@ namespace CD
 
 			if (_HasTarget(args, CodeDomVisitTargets.TypeRefs))
 			{
-				for (int ic = obj.ImplementationTypes.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.ImplementationTypes.Count; ++i)
 				{
 					var ctr = obj.ImplementationTypes[i];
 					if(_CanVisit(ctr,args))
@@ -1067,7 +1083,7 @@ namespace CD
 				_VisitTypeReference(obj.PrivateImplementationType, args.Set(args.Root, obj,"PrivateImplementationType",-1,_BuildPath(args.Path,"PrivateImplementationType",-1), obj.PrivateImplementationType,args.Targets), action);
 			if (_HasTarget(args, CodeDomVisitTargets.Expressions))
 			{
-				for (int ic = obj.Parameters.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.Parameters.Count; ++i)
 				{
 					var pd = obj.Parameters[i];
 					if(_CanVisit(pd,args))
@@ -1078,7 +1094,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Statements))
 			{
-				for (int ic=obj.GetStatements.Count,i=0;i<ic;++i)
+				for (var i=0;i< obj.GetStatements.Count; ++i)
 				{
 					var stmt = obj.GetStatements[i];
 					if(_CanVisit(stmt,args))
@@ -1089,7 +1105,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Statements))
 			{
-				for (int ic = obj.SetStatements.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.SetStatements.Count; ++i)
 				{
 					var stmt = obj.SetStatements[i];
 					if(_CanVisit(stmt,args))
@@ -1100,7 +1116,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1298,7 +1314,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Attributes))
 			{
-				for (int ic = obj.CustomAttributes.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.CustomAttributes.Count; ++i)
 				{
 					var attrDecl = obj.CustomAttributes[i];
 					_VisitAttributeDeclaration(attrDecl, args.Set(args.Root, obj, "CustomAttributes",i,_BuildPath(args.Path,"CustomAttributes",i), attrDecl,args.Targets), action);
@@ -1418,7 +1434,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Expressions))
 			{
-				for (int ic=obj.Parameters.Count,i=0;i<ic;++i)
+				for (var i=0;i< obj.Parameters.Count; ++i)
 				{
 					var ce = obj.Parameters[i];
 					if(_CanVisit(ce,args))
@@ -1517,7 +1533,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Expressions))
 			{
-				for(int ic=obj.Initializers.Count,i=0;i<ic;++i)
+				for(var i=0;i< obj.Initializers.Count; ++i)
 				{
 					var ce = obj.Initializers[i];
 					if(_CanVisit(ce,args))
@@ -1538,7 +1554,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Expressions))
 			{
-				for (int ic=obj.Parameters.Count,i=0;i<ic;++i)
+				for (var i=0;i< obj.Parameters.Count; ++i)
 				{
 					var ce = obj.Parameters[i];
 					if(_CanVisit(ce,args))
@@ -1559,7 +1575,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Expressions))
 			{
-				for (int ic =obj.Indices.Count,i=0;i<ic;++i)
+				for (var i=0;i< obj.Indices.Count; ++i)
 				{
 					var ce = obj.Indices[i];
 					if(_CanVisit(ce,args))
@@ -1580,7 +1596,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Expressions))
 			{
-				for (int ic = obj.Indices.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.Indices.Count; ++i)
 				{
 					var ce = obj.Indices[i];
 					if(_CanVisit(ce,args))
@@ -1691,7 +1707,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Statements))
 			{
-				for (int ic = obj.Statements.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.Statements.Count; ++i)
 				{
 					var stmt = obj.Statements[i];
 					if(_CanVisit(stmt,args))
@@ -1710,7 +1726,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1722,7 +1738,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Statements))
 			{
-				for (int ic=obj.TryStatements.Count,i=0;i<ic;++i)
+				for (var i=0;i< obj.TryStatements.Count; ++i)
 				{
 					var stmt = obj.TryStatements[i];
 					if(_CanVisit(stmt,args))
@@ -1733,7 +1749,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Statements))
 			{
-				for (int ic=obj.CatchClauses.Count,i=0;i<ic;++i)
+				for (var i=0;i< obj.CatchClauses.Count; ++i)
 				{
 					var cl = obj.CatchClauses[i];
 					_VisitCatchClause(cl, args.Set(args.Root, obj,"CatchClauses",-1,_BuildPath(args.Path,"CatchClauses",-1), cl, args.Targets), action);
@@ -1741,7 +1757,7 @@ namespace CD
 						return;
 				}
 			}
-			for (int ic = obj.FinallyStatements.Count, i = 0; i < ic; ++i)
+			for (var i = 0; i < obj.FinallyStatements.Count; ++i)
 			{
 				var stmt = obj.FinallyStatements[i];
 				if(_CanVisit(stmt,args))
@@ -1751,7 +1767,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1769,7 +1785,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1786,7 +1802,7 @@ namespace CD
 				_VisitExpression(obj.Event, args.Set(args.Root, obj,"Listener",-1,_BuildPath(args.Path,"Listener",-1), obj.Listener, args.Targets), action);
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1804,7 +1820,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1816,7 +1832,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1834,7 +1850,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1856,7 +1872,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1874,7 +1890,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1891,7 +1907,7 @@ namespace CD
 				_VisitExpression(obj.Right, args.Set(args.Root, obj, "Right",-1,_BuildPath(args.Path,"Right",-1),obj.Right, args.Targets), action);
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1909,7 +1925,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1924,7 +1940,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1942,7 +1958,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1954,7 +1970,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1972,7 +1988,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -1987,7 +2003,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Statements))
 			{
-				for (int ic=obj.TrueStatements.Count,i=0;i<ic;++i)
+				for (var i=0;i< obj.TrueStatements.Count; ++i)
 				{
 					var stmt = obj.TrueStatements[i];
 					if(_CanVisit(stmt,args))
@@ -1997,7 +2013,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Statements))
 			{
-				for(int ic=obj.FalseStatements.Count,i=0;i<ic;++i)
+				for(var i=0;i< obj.FalseStatements.Count; ++i)
 				{
 					var stmt = obj.FalseStatements[i];
 					if(_CanVisit(stmt,args))
@@ -2007,7 +2023,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -2025,7 +2041,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -2046,7 +2062,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Statements))
 			{
-				for (int ic = obj.Statements.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.Statements.Count; ++i)
 				{
 					var stmt = obj.Statements[i];
 					if(_CanVisit(stmt,args))
@@ -2056,7 +2072,7 @@ namespace CD
 				}
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.Directives)) {
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -2074,7 +2090,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -2091,7 +2107,7 @@ namespace CD
 				_VisitExpression(obj.Listener, args.Set(args.Root, obj,"Listener",-1,_BuildPath(args.Path,"Listener",-1), obj.Listener, args.Targets), action);
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -2109,7 +2125,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -2124,7 +2140,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -2142,7 +2158,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -2157,7 +2173,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -2175,7 +2191,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -2190,7 +2206,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -2207,7 +2223,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.StartDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.StartDirectives.Count; ++i)
 				{
 					var dir = obj.StartDirectives[i];
 					if(_CanVisit(dir,args))
@@ -2222,7 +2238,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Directives))
 			{
-				for (int ic = obj.EndDirectives.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.EndDirectives.Count; ++i)
 				{
 					var dir = obj.EndDirectives[i];
 					if(_CanVisit(dir,args))
@@ -2239,7 +2255,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.Attributes))
 			{
-				for (int ic = obj.CustomAttributes.Count, i = 0; i < ic; ++i)
+				for (var i = 0; i < obj.CustomAttributes.Count; ++i)
 				{
 					var attrDecl = obj.CustomAttributes[i];
 					_VisitAttributeDeclaration(attrDecl, args.Set(args.Root, obj, "CustomAttributes",i,_BuildPath(args.Path,"CustomAttributes",i), attrDecl,args.Targets), action);
@@ -2249,7 +2265,7 @@ namespace CD
 			}
 			if (_HasTarget(args, CodeDomVisitTargets.TypeRefs))
 			{
-				for (int ic=obj.Constraints.Count,i=0;i<ic;++i)
+				for (var i=0;i< obj.Constraints.Count; ++i)
 				{
 					var ctr = obj.Constraints[i];
 					if(_CanVisit(ctr,args))
@@ -2270,7 +2286,7 @@ namespace CD
 			if (args.Cancel) return;
 			if (_HasTarget(args, CodeDomVisitTargets.TypeRefs))
 			{
-				for (int ic=obj.TypeArguments.Count,i=0;i<ic;++i)
+				for (var i=0;i< obj.TypeArguments.Count; ++i)
 				{
 					var ctr = obj.TypeArguments[i];
 					if(_CanVisit(ctr,args))

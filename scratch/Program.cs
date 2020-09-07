@@ -13,9 +13,9 @@ namespace scratch
 	{
 		static void Main()
 		{
-			//RunTemplate();
+			RunTemplate();
 			//RunBinding();
-			RunResolver();
+			//RunResolver();
 		}
 		static void RunResolver()
 		{
@@ -61,6 +61,7 @@ namespace scratch
 						}
 					}
 				}
+				
 			});
 
 		}
@@ -120,16 +121,29 @@ namespace scratch
 			using (var stm = File.OpenRead(@"..\..\Template.cs"))
 				ccu=SlangParser.ReadCompileUnitFrom(stm);
 			// find the target namespace and change it
-			var ns = CU.GetByName("T_NAMESPACE", ccu.Namespaces);
+			var ns = ccu.TryGetNamespace("T_NAMESPACE");
 			ns.Name = "TestNS";
 			// find the target class
-			var type= CU.GetByName("T_TYPE", ns.Types);
+			var type = ns.TryGetType("T_TYPE");
 			// change the name
 			type.Name = "TestPrimes";
 			// get the Primes field:
-			var primes = CU.GetByName("Primes", type.Members) as CodeMemberField;
+			var primes = type.TryGetMember("Primes") as CodeMemberField;
 			// change the init expression to the primes array
 			primes.InitExpression = CU.Literal(primesArr);
+
+			// remove the comments except doc comments
+			CodeDomVisitor.Visit(ccu, (ctx) => {
+				var cs = ctx.Target as CodeCommentStatement;
+				if (null != cs)
+				{
+					if (!cs.Comment.DocComment)
+					{
+						CodeDomVisitor.RemoveTarget(ctx);
+					}
+				}
+			});
+			
 			// now write the result out
 			Console.WriteLine(CU.ToString(ccu));
 		}
