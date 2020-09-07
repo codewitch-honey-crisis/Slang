@@ -120,6 +120,10 @@ namespace scratch
 			CodeCompileUnit ccu;
 			using (var stm = File.OpenRead(@"..\..\Template.cs"))
 				ccu=SlangParser.ReadCompileUnitFrom(stm);
+
+			// patch it either before or after modifying it
+			SlangPatcher.Patch(ccu);
+
 			// find the target namespace and change it
 			var ns = ccu.TryGetNamespace("T_NAMESPACE");
 			ns.Name = "TestNS";
@@ -132,18 +136,18 @@ namespace scratch
 			// change the init expression to the primes array
 			primes.InitExpression = CU.Literal(primesArr);
 
-			// remove the comments except doc comments
+			// fixup any references to T_NAMESPACE or T_TYPE
 			CodeDomVisitor.Visit(ccu, (ctx) => {
-				var cs = ctx.Target as CodeCommentStatement;
-				if (null != cs)
+				var ctr = ctx.Target as CodeTypeReference;
+				if(null!=ctr)
 				{
-					if (!cs.Comment.DocComment)
-					{
-						CodeDomVisitor.RemoveTarget(ctx);
-					}
+					ctr.BaseType = ctr.BaseType.Replace("T_NAMESPACE", ns.Name).Replace("T_TYPE",type.Name);
 				}
 			});
-			
+
+			// already patched prior 
+			// SlangPatcher.Patch(ccu);
+
 			// now write the result out
 			Console.WriteLine(CU.ToString(ccu));
 		}

@@ -248,10 +248,8 @@ namespace CD
 			obj.UserData.Remove("codedomgokit:visit");
 			return obj;
 		}
-		/// <summary>
-		/// A helper method to remove the current target during the visit operation
-		/// </summary>
-		/// <param name="ctx"></param>
+		/* TODO: below screws up visit. 
+		// A helper method to remove the current target during the visit operation
 		public static void RemoveTarget(CodeDomVisitContext ctx)
 		{
 			var prop = ctx.Parent.GetType().GetProperty(ctx.Member);
@@ -264,6 +262,7 @@ namespace CD
 				prop.SetValue(ctx.Parent, null);
 			}
 		}
+		*/
 		/// <summary>
 		/// A helper method to replace the current target with a new value during the visit operation
 		/// </summary>
