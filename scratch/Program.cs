@@ -19,6 +19,13 @@ namespace scratch
 		}
 		static void RunResolver()
 		{
+			byte[] data;
+			using (var stream = File.OpenRead(@"myfile.bin"))
+			{
+				data = new byte[(int)stream.Length];
+				stream.Read(data, 0, data.Length);
+			}
+			
 			// create a resolver
 			var res = new CodeDomResolver();
 			
@@ -44,7 +51,7 @@ namespace scratch
 			// graph and try to get their type
 			CodeDomVisitor.Visit(ccu, (ctx) => {
 				var expr = ctx.Target as CodeExpression;
-				if (null != expr) 
+				if (null != expr)
 				{
 					// we want everything except CodeTypeReferenceExpression
 					var ctre = expr as CodeTypeReferenceExpression;
@@ -52,7 +59,7 @@ namespace scratch
 					{
 						// get the scope of the expression
 						var scope = res.GetScope(expr);
-						CodeTypeReference ctr = res.TryGetTypeOfExpression(expr,scope);
+						CodeTypeReference ctr = res.TryGetTypeOfExpression(expr, scope);
 						if (null != ctr)
 						{
 							Console.WriteLine(CU.ToString(expr) + " is type: " + CU.ToString(ctr));
@@ -61,7 +68,6 @@ namespace scratch
 						}
 					}
 				}
-				
 			});
 
 		}
